@@ -20,7 +20,6 @@ public class Post {
     User user;
     String title;
     @Lob
-    //bunu yapma nedeni Stringi varchar olarak algılayıp 255 karakter vermemesini sağlamak. String olarak algılatmak.
     @Column(columnDefinition = "text")
     String text;
 

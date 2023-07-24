@@ -8,7 +8,7 @@ import lombok.Data;
 @Entity
 @Table(name="user")
 @Data
-public class User {
+public class User{
     @Id
     Long id;
     String userName;
