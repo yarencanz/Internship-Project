@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import "./Home.css"
 
+
 function Home(){
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -37,7 +38,7 @@ function Home(){
             <Container fixed className="container" maxWidth="sm">
               <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, py: 2}} >
             {postList.map( post => (
-                <Post title={post.title} text={post.text}></Post> 
+                <Post userId = {post.userId} userName= {post.userName} title={post.title} text={post.text}></Post> 
                 ))}
 
               </Box>

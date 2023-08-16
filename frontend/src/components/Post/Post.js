@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
+import { Link } from "react-router-dom";
 
 
 const ExpandMore = styled((props) => {
@@ -26,21 +27,28 @@ const ExpandMore = styled((props) => {
 
 
 function Post(props){
-  const {title, text} = props;
+  const {title, text, userId, userName} = props;
   const [expanded, setExpanded] = React.useState(false);
+  const [liked, setLiked] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const handleLike = () => {
+    setLiked(!liked);
+  }
 
   return(
     
        <Card sx={{ width: 345 }}>
       <CardHeader
         avatar={
+          <Link className= 'link' to={{pathname : '/users/' + userId}}>
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+            {userName.charAt(0).toUpperCase()}
           </Avatar>
+          </Link>
         }
         title={title}
       />
@@ -50,8 +58,10 @@ function Post(props){
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton 
+        onClick={handleLike}
+        aria-label="add to favorites">
+          <FavoriteIcon sx={liked? {color: 'red'} : null}/>
         </IconButton>
        
         <ExpandMore
