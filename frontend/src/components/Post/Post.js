@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,10 +8,12 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import { Link } from "react-router-dom";
+import { Container } from "@mui/material";
+import Comment from "../Comment/Comment";
+import CommentForm from "../Comment/CommentForm";
 
 
 const ExpandMore = styled((props) => {
@@ -27,17 +29,46 @@ const ExpandMore = styled((props) => {
 
 
 function Post(props){
-  const {title, text, userId, userName} = props;
+  const {title, text, userId, userName, postId} = props;
   const [expanded, setExpanded] = React.useState(false);
   const [liked, setLiked] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [commentList, setCommentList] = useState([]);
+  const isInitialMount = useRef(true);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+    refreshComments();
+    console.log(commentList);
   };
 
   const handleLike = () => {
     setLiked(!liked);
   }
+
+  const refreshComments = () => {
+    fetch("/comments?postId="+postId)
+    .then(res => res.json())
+    .then(
+        (result) => {
+            setIsLoaded(true);
+            setCommentList(result);
+        },
+        (error) => {
+            console.log(error);
+            setIsLoaded(true);
+            setError(error);
+        }
+    )
+}
+
+useEffect(() => {
+  if(isInitialMount.current)
+  isInitialMount.current = false;
+else
+  refreshComments();
+}, [commentList])
 
   return(
     
@@ -45,7 +76,7 @@ function Post(props){
       <CardHeader
         avatar={
           <Link className= 'link' to={{pathname : '/users/' + userId}}>
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)' }} aria-label="recipe">
             {userName.charAt(0).toUpperCase()}
           </Avatar>
           </Link>
@@ -74,9 +105,13 @@ function Post(props){
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-         
-        </CardContent>
+        <Container fixed >
+         {error? "error" : 
+         isLoaded? commentList.map(comment => (
+          <Comment userId = {1} userName = {"Uyarencanz"} text ={comment.text}></Comment>
+         )) : "Loading"}
+         <CommentForm userId = {1} userName = {"Uyarencanz"} postId ={postId}></CommentForm>
+        </Container>
       </Collapse>
     </Card>
     
