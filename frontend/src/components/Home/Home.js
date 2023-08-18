@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import "./Home.css"
+import PostForm from "../Post/PostForm";
 
 
 function Home(){
@@ -11,7 +12,7 @@ function Home(){
     const [isLoaded, setIsLoaded] = useState(false);
     const [postList, setPostList] = useState([]);
 
-    useEffect(() => {
+    const refreshPosts = () => {
         fetch("/posts")
         .then(res => res.json())
         .then(
@@ -20,11 +21,16 @@ function Home(){
                 setPostList(result);
             },
             (error) => {
+                console.log(error);
                 setIsLoaded(true);
                 setError(error);
             }
         )
-    }, [])
+    }
+
+    useEffect(() => {
+       refreshPosts()
+    }, [postList])
 
     if(error){
         return <div> Error !!!</div>;
@@ -35,10 +41,14 @@ function Home(){
 
             <>
             <CssBaseline />
-            <Container fixed className="container" maxWidth="sm">
-              <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, py: 2}} >
-            {postList.map( post => (
-                <Post userId = {post.userId} userName= {post.userName} title={post.title} text={post.text}></Post> 
+            <Container fixed className="container" maxWidth="m">
+
+              <Box sx={{ bgcolor: '#e8e4e3',  display: 'flex', 
+              flexDirection: 'column', alignItems: 'center', gap: 4, py: 2}} >
+                <PostForm userId = {1} userName= {"yarencanz"} refreshPosts = {refreshPosts}/>
+                {postList.map( post => (
+                <Post postId = {post.id} userId = {post.userId} userName= {post.userName} title={post.title} text={post.text} 
+                ></Post> 
                 ))}
 
               </Box>
