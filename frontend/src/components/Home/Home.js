@@ -30,7 +30,7 @@ function Home(){
 
     useEffect(() => {
        refreshPosts()
-    }, [postList])
+    }, [])
 
     if(error){
         return <div> Error !!!</div>;
@@ -46,8 +46,9 @@ function Home(){
               <Box sx={{ bgcolor: '#e8e4e3',  display: 'flex', 
               flexDirection: 'column', alignItems: 'center', gap: 4, py: 2}} >
                 <PostForm userId = {1} userName= {"yarencanz"} refreshPosts = {refreshPosts}/>
-                {postList.map( post => (
-                <Post postId = {post.id} userId = {post.userId} userName= {post.userName} title={post.title} text={post.text} 
+                {postList && postList.length>0 &&
+                postList.map( post => (
+                <Post key={post.id} likes= {post.postLikes} postId = {post.id} userId = {post.userId} userName= {post.userName} title={post.title} text={post.text} 
                 ></Post> 
                 ))}
 

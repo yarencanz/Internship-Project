@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
-import { Button, InputAdornment, OutlinedInput, Snackbar } from "@mui/material";
+import { Box, Button, InputAdornment, OutlinedInput, Snackbar } from "@mui/material";
 import MuiAlert from '@mui/material/Alert';
 
 function PostForm(props){
@@ -63,13 +63,13 @@ function PostForm(props){
 
   return(
     <>
-    <div>
+    <Box>
       <Snackbar open={isSent} autoHideDuration={1200} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Your post is sent!
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
     
     <Card sx={{ width: 345 }}>
         <CardHeader

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
  
 
 function CommentForm(props){
-    const { userId, userName, postId} = props;
+    const { userId, userName, postId, refreshComments} = props;
     const [text, setText] = useState("");
     const saveComment = () => {
         fetch("/comments",
@@ -21,7 +21,8 @@ function CommentForm(props){
             text: text,
            }),
         })
-        .then((res) => res.json())
+        .then((res) => {refreshComments();
+            return res.json()})
         .catch((err) => console.log(err))
       }
     const handleSubmit = () => {
