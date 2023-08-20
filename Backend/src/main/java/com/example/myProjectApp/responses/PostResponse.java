@@ -1,7 +1,10 @@
 package com.example.myProjectApp.responses;
 
+import com.example.myProjectApp.entities.Like;
 import com.example.myProjectApp.entities.Post;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class PostResponse {
@@ -11,12 +14,16 @@ public class PostResponse {
     String userName;
     String title;
     String text;
+    List<LikeResponse> postLikes;
 
-    public PostResponse(Post entity){
+    public PostResponse(Post entity, List<LikeResponse> likes){
         this.id= entity.getId();
         this.userId = entity.getUser().getId();
         this.userName = entity.getUser().getUserName();
         this.title = entity.getTitle();
         this.text= entity.getText();
+        this.postLikes = likes;
     }
+
+
 }

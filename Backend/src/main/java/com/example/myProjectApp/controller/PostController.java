@@ -4,6 +4,7 @@ import com.example.myProjectApp.entities.Post;
 import com.example.myProjectApp.requests.PostCreateRequest;
 import com.example.myProjectApp.requests.PostUpdateRequest;
 import com.example.myProjectApp.responses.PostResponse;
+import com.example.myProjectApp.services.LikeService;
 import com.example.myProjectApp.services.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,12 @@ import java.util.Optional;
 public class PostController {
 
     private PostService postService;
+    private LikeService likeService;
 
-    public  PostController(PostService postService){
+    public  PostController(PostService postService, LikeService likeService){
         this.postService = postService;
+        this.likeService = likeService;
+        this.postService.setLikeService(likeService);
     }
 
     @GetMapping
